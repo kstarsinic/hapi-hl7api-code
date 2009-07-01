@@ -6,7 +6,7 @@
 		<author email="jamesagnew@users.sourceforge.net">James Agnew</author>
 	</properties>
 	<body>
-		<release version="0.6" date="2009-06-28"
+		<release version="0.6" date="2009-07-01"
 			description="This release adds support for HL7 2.5.1 and 2.6, as well as fixing a number of issues and introducing a new build system.">			
 			<action type="add" due-to="Christian Ohr" issue="2793054">Add constructors to all parser types allowing a custom model factory</action>
 			<action type="fix" due-to="Gerald Bortis, Polloloco" issue="2164291">Fix XML parsing of seg groups containing more than one instance of the same segment (e.g. A17)</action>
