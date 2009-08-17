@@ -1,0 +1,128 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<description>
+		Osgification of HAPI.
+		Author : niranjan.sharma@med.ge.com
+		Date: 17-AUG-2009
+	</description>
+
+	<parent>
+		<artifactId>hapi</artifactId>
+		<groupId>ca.uhn.hapi</groupId>
+		<version>1.0-beta1-osgi</version>
+		<relativePath>../osgi-pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ca.uhn.hapi</groupId>
+	<artifactId>hapi-base</artifactId>
+	<name>HAPI-Base Module</name>
+
+	<packaging>bundle</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>jboss-j2ee</artifactId>
+			<version>4.0.2</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.9</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ca.uhn.hapi</groupId>
+			<artifactId>hapi-structures-v26</artifactId>
+			<version>0.6</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.0.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<!--
+							Embed all dependency jars except logging one. Since logging shall
+							be used from PAX-logging
+						-->
+						<Embed-Dependency>*;scope=compile|runtime;artifactId=!commons-logging|log4j</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<unpackBundle>true</unpackBundle>
+						<Export-Package>
+							ca.uhn.hl7v2*,
+							ca.uhn.hl7v2.app*,
+							ca.uhn.hl7v2.conf*,
+							ca.uhn.hl7v2.conf.check*,
+							ca.uhn.hl7v2.conf.classes.abs*,
+							ca.uhn.hl7v2.conf.classes.exceptions*,
+							ca.uhn.hl7v2.conf.parser*,
+							ca.uhn.hl7v2.conf.spec*,
+							ca.uhn.hl7v2.conf.spec.message*,
+							ca.uhn.hl7v2.conf.spec.usecase*,
+							ca.uhn.hl7v2.conf.store*,
+							ca.uhn.hl7v2.llp*,
+							ca.uhn.hl7v2.model*,
+							ca.uhn.hl7v2.model.primitive*,
+							ca.uhn.hl7v2.model.v21.datatype*,
+							ca.uhn.hl7v2.model.v22.datatype*,
+							ca.uhn.hl7v2.model.v23.datatype*,
+							ca.uhn.hl7v2.model.v231.datatype*,
+							ca.uhn.hl7v2.model.v24.datatype*,
+							ca.uhn.hl7v2.model.v25.datatype*,
+							ca.uhn.hl7v2.model.v251.datatype*,
+							ca.uhn.hl7v2.model.v26.datatype*,
+							ca.uhn.hl7v2.parser*,
+							ca.uhn.hl7v2.preparser*,
+							ca.uhn.hl7v2.protocol*,
+							ca.uhn.hl7v2.protocol.impl*,
+							ca.uhn.hl7v2.util*,
+							ca.uhn.hl7v2.validation*,
+							ca.uhn.hl7v2.validation.app*,
+							ca.uhn.hl7v2.validation.impl*,
+							ca.uhn.hl7v2.view*,
+							ca.uhn.hl7v3.rim*,
+							ca.uhn.hl7v3.rim.datatype*,
+							ca.uhn.hl7v3.sourcegen*,
+							ca.uhn.log*
+	                    </Export-Package>
+						<Import-Package>*;resolution:=optional</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
