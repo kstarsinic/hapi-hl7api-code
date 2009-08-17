@@ -1,28 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<version>1.0-beta1-osgi</version>
-	
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<parent>
 		<artifactId>hapi</artifactId>
 		<groupId>ca.uhn.hapi</groupId>
 		<version>1.0-beta1-osgi</version>
 		<relativePath>../osgi-pom.xml</relativePath>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>ca.uhn.hapi</groupId>
 	<artifactId>hapi-structures-v21</artifactId>
 	<name>HAPI - Generated Structures v2.1</name>
-	
+
 	<packaging>bundle</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>ca.uhn.hapi</groupId>
 			<artifactId>hapi-base</artifactId>
-			<version>1.0-beta1</version>
-		</dependency>		
+			<version>1.0-beta1-osgi</version>
+		</dependency>
 	</dependencies>
 
 	<reporting>
@@ -31,8 +30,23 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.0.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Embed-Dependency>dependencies</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<unpackBundle>true</unpackBundle>
+						<Export-Package>*</Export-Package>
+						<Import-Package>*;resolution:=optional</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>ca.uhn.hapi</groupId>
-				<artifactId>hapi-sourcegen</artifactId>				
+				<artifactId>hapi-sourcegen</artifactId>
 				<executions>
 					<execution>
 						<id>v21</id>
@@ -41,12 +55,12 @@
 							<goal>sourcegen</goal>
 						</goals>
 						<configuration>
-							<version>2.1</version>							
-                            <jdbcUrl>${sourcegen.jdbcUrl.old}</jdbcUrl>
-                            <jdbcUser>${sourcegen.jdbcUser.old}</jdbcUser>
-                            <jdbcPassword>${sourcegen.jdbcPassword.old}</jdbcPassword>
+							<version>2.1</version>
+							<jdbcUrl>${sourcegen.jdbcUrl.old}</jdbcUrl>
+							<jdbcUser>${sourcegen.jdbcUser.old}</jdbcUser>
+							<jdbcPassword>${sourcegen.jdbcPassword.old}</jdbcPassword>
 							<targetDirectory>${basedir}/target/sourcegen</targetDirectory>
-                            <targetResourceDirectory>${basedir}/target/resourcegen</targetResourceDirectory>
+							<targetResourceDirectory>${basedir}/target/resourcegen</targetResourceDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -62,9 +76,9 @@
 						</goals>
 						<configuration>
 							<descriptors>
-							    <descriptor>../src/assembly/structures-source.xml</descriptor>
+								<descriptor>../src/assembly/structures-source.xml</descriptor>
 							</descriptors>
-						</configuration>						
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -75,10 +89,10 @@
 						<phase>site</phase>
 						<configuration>
 							<tasks>
-								<echo message="Copying resources"/>
+								<echo message="Copying resources" />
 								<copy todir="../target/site/v21/apidocs">
 									<fileset dir="target/site/apidocs">
-										<include name="**/*"/>
+										<include name="**/*" />
 									</fileset>
 								</copy>
 							</tasks>
@@ -95,10 +109,10 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-            <resource>
-                <directory>${basedir}/target/resourcegen</directory>
-                <filtering>false</filtering>
-            </resource>
+			<resource>
+				<directory>${basedir}/target/resourcegen</directory>
+				<filtering>false</filtering>
+			</resource>
 		</resources>
 		<!-- <sourceDirectory></sourceDirectory>  -->
 	</build>
