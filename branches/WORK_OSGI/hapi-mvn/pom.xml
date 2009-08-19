@@ -327,7 +327,7 @@
                 <module>hapi-structures-v25</module>
                 <module>hapi-structures-v251</module>
                 <module>hapi-structures-v26</module>
-                <module>hapi-osgi-tests</module>
+                <module>hapi-osgi-test</module>
             </modules>
         </profile>
         
