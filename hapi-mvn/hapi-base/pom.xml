@@ -116,7 +116,71 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.0.0</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+		                <configuration>
+		                    <classifier>osgi</classifier>
+		                    <instructions>
+		                        <!--
+		                            Embed all dependency jars except logging one. Since logging shall
+		                            be used from PAX-logging
+		                        -->
+		                        <Embed-Dependency>*;scope=compile|runtime;artifactId=!commons-logging|log4j</Embed-Dependency>
+		                        <Embed-Transitive>true</Embed-Transitive>
+		                        <unpackBundle>true</unpackBundle>
+		                        <Export-Package>
+		                            ca.uhn.hl7v2*,
+		                            ca.uhn.hl7v2.app*,
+		                            ca.uhn.hl7v2.conf*,
+		                            ca.uhn.hl7v2.conf.check*,
+		                            ca.uhn.hl7v2.conf.classes.abs*,
+		                            ca.uhn.hl7v2.conf.classes.exceptions*,
+		                            ca.uhn.hl7v2.conf.parser*,
+		                            ca.uhn.hl7v2.conf.spec*,
+		                            ca.uhn.hl7v2.conf.spec.message*,
+		                            ca.uhn.hl7v2.conf.spec.usecase*,
+		                            ca.uhn.hl7v2.conf.store*,
+		                            ca.uhn.hl7v2.llp*,
+		                            ca.uhn.hl7v2.model*,
+		                            ca.uhn.hl7v2.model.primitive*,
+		                            ca.uhn.hl7v2.model.v21.datatype*,
+		                            ca.uhn.hl7v2.model.v22.datatype*,
+		                            ca.uhn.hl7v2.model.v23.datatype*,
+		                            ca.uhn.hl7v2.model.v231.datatype*,
+		                            ca.uhn.hl7v2.model.v24.datatype*,
+		                            ca.uhn.hl7v2.model.v25.datatype*,
+		                            ca.uhn.hl7v2.model.v251.datatype*,
+		                            ca.uhn.hl7v2.model.v26.datatype*,
+		                            ca.uhn.hl7v2.parser*,
+		                            ca.uhn.hl7v2.preparser*,
+		                            ca.uhn.hl7v2.protocol*,
+		                            ca.uhn.hl7v2.protocol.impl*,
+		                            ca.uhn.hl7v2.util*,
+		                            ca.uhn.hl7v2.validation*,
+		                            ca.uhn.hl7v2.validation.app*,
+		                            ca.uhn.hl7v2.validation.impl*,
+		                            ca.uhn.hl7v2.view*,
+		                            ca.uhn.hl7v3.rim*,
+		                            ca.uhn.hl7v3.rim.datatype*,
+		                            ca.uhn.hl7v3.sourcegen*,
+		                            ca.uhn.log*
+		                        </Export-Package>
+		                        <Import-Package>*;resolution:=optional</Import-Package>
+		                    </instructions>
+		                </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
