@@ -96,7 +96,7 @@ public class MinLowerLayerProtocolTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi")
+	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi").classifier("osgi")
 	// , vmOption(
 	// "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
 	);
