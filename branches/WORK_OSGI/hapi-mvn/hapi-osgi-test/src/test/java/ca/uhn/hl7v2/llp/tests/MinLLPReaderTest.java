@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
@@ -91,7 +92,7 @@ public class MinLLPReaderTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi")
+	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1").classifier("osgi")
 
 	);
     }
@@ -105,7 +106,8 @@ public class MinLLPReaderTest {
 	
 	// only want to setup once
 	if (msgLib == null) {
-	    String path = "D:\\Alchemist\\STS-Workspace\\hapi-mvn\\hapi-osgi-test\\src\\test\\resources\\ca\\uhn\\hl7v2\\util\\messages.txt";
+	    URL res = Thread.currentThread().getContextClassLoader().getResource("ca/uhn/hl7v2/util/messages.txt");
+	    String path = res.getPath();
 	    msgLib = new MessageLibrary(path, "VB");
 	    inputStream = msgLib.getAsByteArrayInputStream();
 	}
