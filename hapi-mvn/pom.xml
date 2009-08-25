@@ -338,14 +338,5 @@
                 <module>hapi-osgi-test</module>
             </modules>
         </profile>
-        <profile>
-            <id>nk</id>
-            <build>
-            </build>
-            <modules>
-                <module>hapi-base</module>
-            </modules>
-        </profile>
-	</profiles>	
-	
+	</profiles>
 </project>
