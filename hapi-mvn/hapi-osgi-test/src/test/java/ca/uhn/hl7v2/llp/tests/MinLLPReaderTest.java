@@ -106,9 +106,7 @@ public class MinLLPReaderTest {
 	
 	// only want to setup once
 	if (msgLib == null) {
-	    URL res = Thread.currentThread().getContextClassLoader().getResource("ca/uhn/hl7v2/util/messages.txt");
-	    String path = res.getPath();
-	    msgLib = new MessageLibrary(path, "VB");
+	    msgLib = new MessageLibrary("src/test/resources/ca/uhn/hl7v2/util/messages.txt", "VB");
 	    inputStream = msgLib.getAsByteArrayInputStream();
 	}
     }
