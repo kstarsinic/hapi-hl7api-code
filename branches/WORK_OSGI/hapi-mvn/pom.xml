@@ -133,14 +133,16 @@
 	</modules>
 
 	<distributionManagement>
-		<!--
-			<repository> <id>hapi</id> <name>HAPI Sourceforge</name>
-			<url>scp://web.sourceforge.net/home/groups/h/hl/hl7api/htdocs/m2</url>
-			</repository> <snapshotRepository> <id>hapi</id> <name>HAPI
-			Sourceforge</name>
-			<url>scp://web.sourceforge.net/home/groups/h/hl/hl7api/htdocs/m2</url>
-			</snapshotRepository>
-		-->
+        <repository>
+            <id>hapi</id>
+            <name>HAPI Sourceforge</name>
+            <url>scp://shell.sourceforge.net/home/groups/h/hl/hl7api/htdocs/m2</url>
+        </repository>
+        <snapshotRepository>
+            <id>hapi</id>
+            <name>HAPI Sourceforge</name>
+            <url>scp://shell.sourceforge.net/home/groups/h/hl/hl7api/htdocs/m2</url>
+        </snapshotRepository>
 	</distributionManagement>
 
 	<build>
@@ -167,6 +169,11 @@
 			</plugin>
 		</plugins>
 		<extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>1.0-beta-6</version>
+            </extension>
 		</extensions>
 	</build>
 
