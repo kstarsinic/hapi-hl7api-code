@@ -60,23 +60,12 @@ public class ProfileTestApplicationCheck {
 		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
 		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
 		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
-		,provision(
-	        	    scanDir( "D:\\Alchemist\\STS-Workspace\\hapi-mvn\\hapi-base\\target\\" ).filter("*osgi.jar")
-	            )
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v21").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v22").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v23").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v231").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v24").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v25").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v251").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v26").version("1.0-beta1").classifier("osgi")
-		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
 
 
 	);
-    }
+    } 
     
     @Test
     public void testProcessMessage() throws Exception {

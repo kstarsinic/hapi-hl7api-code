@@ -38,7 +38,7 @@ import ca.uhn.hl7v2.protocol.impl.TransportableImpl;
  * Unit tests for <code>AcceptAcknowledger</code>. 
  * 
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.3 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
  */
@@ -99,7 +99,7 @@ public class AcceptAcknowledgerTest {
      * Skeleton mock implementation of <code>AcceptValidator</code>. 
      * 
      * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
-     * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+     * @version $Revision: 1.1.2.3 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
      */
     public class MockValidator implements AcceptValidator {
         
@@ -135,7 +135,7 @@ public class AcceptAcknowledgerTest {
      * store something (for negative testing).  
      *  
      * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
-     * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+     * @version $Revision: 1.1.2.3 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
      */    
     public class BadStore implements SafeStorage {
 

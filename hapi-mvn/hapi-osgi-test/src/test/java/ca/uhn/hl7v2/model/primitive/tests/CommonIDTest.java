@@ -37,7 +37,7 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.logProfile;
-
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
@@ -83,7 +83,7 @@ public class CommonIDTest {
     		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
     		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
     		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
-    //		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+//    		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
     
     
     	);
@@ -98,10 +98,15 @@ public class CommonIDTest {
 		table = 5;
 		value = "test";
 		commonID = new ID(new GenericMessage.V25(new DefaultModelClassFactory()), table) {
-            public String getVersion() {
-                return "2.5";
-            }
-        };
+                    /**
+		     * 
+		     */
+		    private static final long serialVersionUID = 1L;
+
+		    public String getVersion() {
+                        return "2.5";
+                    }
+		};
 	}
 
 

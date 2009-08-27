@@ -41,7 +41,7 @@ import ca.uhn.hl7v2.util.Terser;
  * Unit tests for <code>InitiatorImpl</code>.
  * 
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author:
+ * @version $Revision: 1.1.2.3 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author:
  *          jamesagnew $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
@@ -170,7 +170,7 @@ public class InitiatorImplTest {
      * can control messages returned via receive().
      * 
      * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
-     * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by
+     * @version $Revision: 1.1.2.3 $ updated on $Date: 2009-08-27 21:56:54 $ by
      *          $Author: niranjansharma $
      */
     private class MockProcessor implements Processor {

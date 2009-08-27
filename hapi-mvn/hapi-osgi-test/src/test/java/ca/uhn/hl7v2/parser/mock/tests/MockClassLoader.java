@@ -32,7 +32,7 @@ import java.io.InputStream;
  * Mock class loader, it only implements the <code> getResourceAsStream </code> method. 
  * 
  * @author <a href="mailto:alexei.guevara@uhn.on.ca">Alexei Guevara</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
  */
 public class MockClassLoader extends ClassLoader {
 	
