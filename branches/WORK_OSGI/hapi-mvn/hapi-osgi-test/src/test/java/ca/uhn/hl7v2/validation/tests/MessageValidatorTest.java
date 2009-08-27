@@ -45,7 +45,7 @@ import ca.uhn.hl7v2.validation.impl.ValidationContextImpl;
  * Unit tests for MessageValidator. 
  * 
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
  */
@@ -65,19 +65,8 @@ public class MessageValidatorTest{
 		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
 		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
 		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
-		,provision(
-	        	    scanDir( "D:\\Alchemist\\STS-Workspace\\hapi-mvn\\hapi-base\\target\\" ).filter("*osgi.jar")
-	            )
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v21").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v22").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v23").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v231").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v24").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v25").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v251").version("1.0-beta1").classifier("osgi")
-//		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-structures-v26").version("1.0-beta1").classifier("osgi")
-		//, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
 
 
 	);

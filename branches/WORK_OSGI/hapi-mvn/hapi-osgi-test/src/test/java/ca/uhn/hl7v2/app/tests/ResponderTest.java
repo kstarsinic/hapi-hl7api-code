@@ -42,7 +42,7 @@ import ca.uhn.hl7v2.parser.GenericParser;
 /**
  * Test case for responder
  * 
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-27 01:41:57 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
  * 
@@ -152,7 +152,7 @@ public class ResponderTest
      * Application which always throws an HL7 exception
      * 
      * @author <a href="mailto:james.agnew@uhn.on.ca">James Agnew</a>
-     * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-27 01:41:57 $ by $Author: niranjansharma $
+     * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
      */
     public class DummyApplication implements Application
     {

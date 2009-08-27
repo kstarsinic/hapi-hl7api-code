@@ -19,6 +19,7 @@ import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.logProfile;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -33,6 +34,7 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import ca.uhn.hl7v2.conf.store.URLProfileStore;
+import ca.uhn.hl7v2.util.tests.MessageLibrary;
 
 /**
  * JUnit tests for URLProfileStore 
@@ -65,9 +67,10 @@ public class URLProfileStoreTest {
 
     @Test
     public void testWithClassLoader() throws Exception {
-        URLProfileStore store = new URLProfileStore() {
+        
+	URLProfileStore store = new URLProfileStore() {
             public URL getURL(String ID) throws MalformedURLException {
-                return this.getClass().getClassLoader().getResource("ca/uhn/hl7v2/conf/store/tests" + ID + ".xml");
+                return URLProfileStoreTest.class.getClassLoader().getResource("ca/uhn/hl7v2/conf/store/tests/" + ID + ".xml");
             }
         };
         
@@ -75,21 +78,21 @@ public class URLProfileStoreTest {
         assertEquals("<foo/>", profile);        
     }
 
-    @Test
-    public void testWithHTTP() throws Exception {
+//    @Test
+//    public void testWithHTTP() throws Exception {
+//        URLProfileStore store = new URLProfileStore() {
+//            public URL getURL(String ID) throws MalformedURLException {
+//                return new URL("http://www.google.com");
+//            }
+//        };
+//        
+//        String in = store.getProfile("test");
+//        assertTrue(in.indexOf("Google") >= 0);
+//    }
+    
+    public void testWithFile() throws Exception {
         URLProfileStore store = new URLProfileStore() {
             public URL getURL(String ID) throws MalformedURLException {
-                return new URL("http://google.com");
-            }
-        };
-        
-        String in = store.getProfile("test");
-        assertTrue(in.indexOf("Google") >= 0);
-    }
-    
-    /*public void testWithFile() throws Exception {
-        URLProfileStore store = new URLProfileStore() {
-            public URL getReadURL(String ID) throws MalformedURLException {
                 File f = new File(".");
                 return new URL("file:///" + f.getAbsolutePath() + "/" + ID + ".xml");
             }
@@ -99,6 +102,6 @@ public class URLProfileStoreTest {
         store.persistProfile("test", out);
         String in = store.getProfile("test");
         assertEquals(out, in);
-    }*/
+    }
     
 }

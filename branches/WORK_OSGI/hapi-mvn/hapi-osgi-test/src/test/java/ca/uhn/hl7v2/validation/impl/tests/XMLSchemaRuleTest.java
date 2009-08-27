@@ -17,6 +17,7 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanDir;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -39,7 +40,7 @@ import ca.uhn.hl7v2.validation.impl.XMLSchemaRule;
  * Unit tests for <code>ValidatesAgainstSchema</code>.
  *   
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 21:56:54 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
  */
@@ -72,11 +73,13 @@ public class XMLSchemaRuleTest{
         
         URL res = XMLSchemaRuleTest.class.getClassLoader().getResource("ca/uhn/hl7v2/validation/impl/tests/ACK.xsd");
         String resPath = res.toString().replace("file:/", "").replace("/ACK.xsd", "");
-        
+         
+        System.out.println("*****************************ResPath="+resPath+"*******************" );
         System.setProperty("ca.uhn.hl7v2.validation.xmlschemavalidator.schemalocation.2.5", resPath);
         
         EncodingRule rule = new XMLSchemaRule();
         ValidationException[] errors = rule.test(getMessage1());
+        System.out.println(errors[0].getMessage());
         assertEquals(0, errors.length);
 
         errors = rule.test(getMessage2());
