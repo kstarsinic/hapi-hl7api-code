@@ -13,6 +13,7 @@
 
 	<properties>
 		<target-framework>equinox</target-framework>
+		<dependency.pax.web.version>0.5.2</dependency.pax.web.version>
 	</properties>
 
 
@@ -22,47 +23,51 @@
 			<groupId>ca.uhn.hapi</groupId>
 			<artifactId>hapi-osgi-base</artifactId>
 			<version>1.0-beta1</version>
+			<scope>provided</scope>
 		</dependency>
-
 		<!-- Pax Exam -->
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam</artifactId>
 			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-container-default</artifactId>
 			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-junit</artifactId>
 			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-junit-extender-impl</artifactId>
 			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.url</groupId>
 			<artifactId>pax-url-mvn</artifactId>
 			<version>0.4.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit-addons</groupId>
+			<artifactId>junit-addons</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.web</groupId>
+			<artifactId>pax-web-service</artifactId>
+			<version>${dependency.pax.web.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
@@ -83,14 +88,16 @@
 						<goals>
 							<goal>generate-config</goal>
 						</goals>
-
 					</execution>
 				</executions>
 				<configuration>
 					<options>
 						<platform>${target-framework}</platform>
-						<profiles>log</profiles>
+						<profiles>log,url</profiles>
 					</options>
+					          <settings>
+            <dependency_options>org.ops4j.pax.web:pax-web-service@7</dependency_options>
+          </settings>
 				</configuration>
 			</plugin>
 		</plugins>
