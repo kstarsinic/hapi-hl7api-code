@@ -30,8 +30,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.felix;
-import static org.ops4j.pax.exam.CoreOptions.knopflerfish;
 import static org.ops4j.pax.exam.CoreOptions.frameworks;
+import static org.ops4j.pax.exam.CoreOptions.knopflerfish;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
@@ -54,7 +54,6 @@ import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import ca.uhn.hl7v2.llp.HL7Reader;
@@ -96,9 +95,15 @@ public class MinLowerLayerProtocolTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi").classifier("osgi")
-	// , vmOption(
-	// "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+	return options(frameworks(equinox(), felix(), knopflerfish())
+		, logProfile()
+		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
+		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
+		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+
+
 	);
     }
     
@@ -110,7 +115,7 @@ public class MinLowerLayerProtocolTest {
     public void BeforeTheTest() throws Exception {
 	logger.info("*****************************BeforeTheTest******************************************");
 	System.setProperty("ca.uhn.hl7v2.llp.tests.logBytesRead", "FALSE");
-	System.setProperty("ca.uhn.hl7v2.util.tests.status.out", "");
+	System.setProperty("ca.uhn.hl7v2.util.tests.tests.status.out", "");
 	minLowerLayerProtocol = new MinLowerLayerProtocol();
 	message = "This is a test HL7 message";
 	llpEncodedMessage = (START_MESSAGE + message + END_MESSAGE + LAST_CHARACTER).getBytes();
@@ -186,7 +191,7 @@ public class MinLowerLayerProtocolTest {
 	
 	// Set properties to generate a status message
 	System.setProperty("ca.uhn.hl7v2.llp.tests.logBytesRead", "TRUE");
-	System.setProperty("ca.uhn.hl7v2.util.tests.status.out", "");
+	System.setProperty("ca.uhn.hl7v2.util.tests.tests.status.out", "");
 	
 	minLowerLayerProtocol = new MinLowerLayerProtocol();
 	

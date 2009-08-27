@@ -29,14 +29,16 @@ package ca.uhn.hl7v2.util.tests;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import ca.uhn.hl7v2.Log;
+import ca.uhn.hl7v2.llp.MinLLPWriter;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.DefaultXMLParser;
 import ca.uhn.hl7v2.parser.GenericParser;
@@ -57,8 +59,18 @@ import ca.uhn.hl7v2.util.Status;
  * @see LibraryEntry
  * 
  * @author Leslie Mann
+ * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
+ *         extended for OSGI environment using Junit4 and PAX-Exam.
+ * 
+ * 
  */
+
+@SuppressWarnings("deprecation")
 public class MessageLibrary extends ArrayList {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private final String MULTI_LINE_COMMENT_START = "/*";
 	private final String MULTI_LINE_COMMENT_END = "*/";
 	private final String SINGLE_LINE_COMMENT = "//";
@@ -119,11 +131,10 @@ public class MessageLibrary extends ArrayList {
 		}
 
 		try {
-		    //BufferedReader in = new BufferedReader(new InputStreamReader(
-                    //this.getClass().getClassLoader().getResourceAsStream(messageFilePath)));
-            
-			BufferedReader in = new BufferedReader(new FileReader(messageFilePath));
-	 
+		      	URL url = MessageLibrary.class.getClassLoader().getResource(messageFilePath);
+		    	URLConnection conn = url.openConnection();
+		    	BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		    			
 			StringBuffer msgBuf = new StringBuffer();
 			HashMap segments = new HashMap();
 			Message msg = null;
@@ -133,7 +144,7 @@ public class MessageLibrary extends ArrayList {
 			//process file
 			while (!eof) {
 				String line = in.readLine();
-
+				System.out.println("Line Read Result************" + line);
 				// check if end of file...
 				if (line == null) {
 					eof = true;

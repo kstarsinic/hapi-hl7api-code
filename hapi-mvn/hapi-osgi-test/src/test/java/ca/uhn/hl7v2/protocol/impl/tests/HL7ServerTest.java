@@ -5,13 +5,18 @@ package ca.uhn.hl7v2.protocol.impl.tests;
 
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.equinox;
+import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.frameworks;
+import static org.ops4j.pax.exam.CoreOptions.knopflerfish;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.provision;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.logProfile;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanDir;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
@@ -23,6 +28,7 @@ import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import ca.uhn.hl7v2.protocol.ApplicationRouter;
@@ -42,7 +48,7 @@ import ca.uhn.hl7v2.protocol.tests.MockApp;
  * Unit tests for <code>HL7Server</code>. 
  * 
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
  */
@@ -57,11 +63,29 @@ public class HL7ServerTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi")
-	// , vmOption(
-	// "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+	return options(frameworks(equinox(), felix(), knopflerfish())
+		, logProfile()
+		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
+		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
+		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+
+
 	);
+    } 
+    
+    @Test
+    public void listBundles()
+    {
+        for( Bundle b : bundleContext.getBundles() )
+        {
+            System.out.println( "Bundle " + b.getBundleId() + " : " + b.getSymbolicName() );
+        }
+
     }
+
+    
     
     /*
      * ********************************************************* Test Cases
@@ -74,7 +98,7 @@ public class HL7ServerTest {
      */
     @Test
     public void testResponse() throws Exception {
-        int port = 9999;
+        int port = 9992;
         String localhost = "127.0.0.1";
         ServerSocket ss = new ServerSocket(port);
         SafeStorage storage = new NullSafeStorage();
@@ -93,34 +117,42 @@ public class HL7ServerTest {
         MLLPTransport transport = new MLLPTransport(sender);
         transport.connect();
         
-        String message = "MSH|^~\\&|LABGL1||DMCRES||19951002180700||ORU^R01|LABGL1199510021807427|P|2.6\rPID|||T12345||TEST^PATIENT^P||19601002|M||||||||||123456";
-        transport.send(new TransportableImpl(message));
-        Transportable inbound = transport.receive();
-        
-        assertTrue(inbound.getMessage().indexOf("mock") > -1);     
-        
-        transport.disconnect();
-        ss.close();   
-    }
-    
-    /**
-     * Test the main of the HL7Server
-     * @throws Exception
-     */
-    @Test
-    public void testMain() throws Exception {
-        HL7Server.main(new String[] {"9999", "classpath:ca/uhn/hl7v2/protocol/impl/mock_apps"});
-
-        StreamSource sender = new ClientSocketStreamSource(new InetSocketAddress("127.0.0.1", 9999));
-        MLLPTransport transport = new MLLPTransport(sender);
-        transport.connect();
-        
         String message = "MSH|^~\\&|LABGL1||DMCRES||19951002180700||ORU^R01|LABGL1199510021807427|P|2.2\rPID|||T12345||TEST^PATIENT^P||19601002|M||||||||||123456";
         transport.send(new TransportableImpl(message));
         Transportable inbound = transport.receive();
         
         assertTrue(inbound.getMessage().indexOf("mock") > -1);     
         
-        transport.disconnect();        
+        transport.disconnect();
+        
+        if(ss != null) {
+            try{
+        	ss.close(); 
+            }catch(IOException ex) {
+        	
+            }
+        }
+          
     }
+    
+//    /**
+//     * Test the main of the HL7Server
+//     * @throws Exception
+//     */
+//    @Test
+//    public void testMain() throws Exception {
+//        HL7Server.main(new String[] {"9996", "classpath:ca/uhn/hl7v2/protocol/impl/tests/mock_apps"});
+//
+//        StreamSource sender = new ClientSocketStreamSource(new InetSocketAddress("127.0.0.1", 9996));
+//        MLLPTransport transport = new MLLPTransport(sender);
+//        transport.connect();
+//        
+//        String message = "MSH|^~\\&|LABGL1||DMCRES||19951002180700||ORU^R01|LABGL1199510021807427|P|2.2\rPID|||T12345||TEST^PATIENT^P||19601002|M||||||||||123456";
+//        transport.send(new TransportableImpl(message));
+//        Transportable inbound = transport.receive();
+//        
+//        assertTrue(inbound.getMessage().indexOf("mock") > -1);     
+//        
+//        transport.disconnect();        
+//    }
 }

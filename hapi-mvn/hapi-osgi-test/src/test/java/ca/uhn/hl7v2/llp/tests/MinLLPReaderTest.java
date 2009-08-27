@@ -15,7 +15,7 @@
  * Contributor(s): ______________________________________.
  *
  * Alternatively, the contents of this file may be used under the terms of the
- * GNU General Public License (the  ï¿½GPLï¿½), in which case the provisions of the GPL are
+ * GNU General Public License (the  “GPL”), in which case the provisions of the GPL are
  * applicable instead of those above.  If you wish to allow use of your version of this
  * file only under the terms of the GPL and not to allow others to use your version
  * of this file under the MPL, indicate your decision by deleting  the provisions above
@@ -26,6 +26,10 @@
  */
 package ca.uhn.hl7v2.llp.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.frameworks;
@@ -35,11 +39,10 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.logProfile;
-import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
@@ -47,7 +50,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -57,7 +59,6 @@ import org.osgi.framework.BundleContext;
 
 import ca.uhn.hl7v2.llp.LLPException;
 import ca.uhn.hl7v2.llp.MinLLPReader;
-import ca.uhn.hl7v2.util.tests.LibraryEntry;
 import ca.uhn.hl7v2.util.tests.MessageLibrary;
 
 /**
@@ -92,7 +93,14 @@ public class MinLLPReaderTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1").classifier("osgi")
+	return options(frameworks(equinox(), felix(), knopflerfish())
+		, logProfile()
+		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
+		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
+		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+
 
 	);
     }
@@ -106,7 +114,7 @@ public class MinLLPReaderTest {
 	
 	// only want to setup once
 	if (msgLib == null) {
-	    msgLib = new MessageLibrary("src/test/resources/ca/uhn/hl7v2/util/messages.txt", "VB");
+	    msgLib = new MessageLibrary("ca/uhn/hl7v2/util/tests/messages.txt", "VB");
 	    inputStream = msgLib.getAsByteArrayInputStream();
 	}
     }

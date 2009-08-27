@@ -33,7 +33,7 @@ import ca.uhn.hl7v2.protocol.impl.ServerSocketStreamSource;
 
 /**
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been extended for OSGI environment using Junit4 and PAX-Exam.
  */
 @RunWith(JUnit4TestRunner.class)
