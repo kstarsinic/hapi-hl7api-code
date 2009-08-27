@@ -17,13 +17,13 @@ import ca.uhn.hl7v2.util.Terser;
 /**
  * Mock <code>Application</code> that returns default messages.  
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
  */
 public class MockApp implements ReceivingApplication {
 
     /** 
      * Returns a default message.  
-     * @see ca.uhn.hl7v2.app.Application#processMessage(ca.uhn.hl7v2.model.Message)
+     * @see ca.uhn.hl7v2.app.Application#processMessage(ca.uhn.hl7v2.model.tests.Message)
      */
     public Message processMessage(Message in, Map theMetadata) throws ReceivingApplicationException, HL7Exception {
         Message response = null;
@@ -42,7 +42,7 @@ public class MockApp implements ReceivingApplication {
 
     /** 
      * Returns true. 
-     * @see ca.uhn.hl7v2.app.Application#canProcess(ca.uhn.hl7v2.model.Message)
+     * @see ca.uhn.hl7v2.app.Application#canProcess(ca.uhn.hl7v2.model.tests.Message)
      */
     public boolean canProcess(Message in) {
         return true;

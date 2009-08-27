@@ -28,7 +28,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import ca.uhn.hl7v2.HL7Exception;
-import ca.uhn.hl7v2.llp.tests.MinLLPWriterTest;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.v26.message.ADT_A01;
 import ca.uhn.hl7v2.protocol.Processor;
@@ -42,7 +41,7 @@ import ca.uhn.hl7v2.util.Terser;
  * Unit tests for <code>InitiatorImpl</code>.
  * 
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by $Author:
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author:
  *          jamesagnew $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been
  *         extended for OSGI environment using Junit4 and PAX-Exam.
@@ -51,16 +50,22 @@ import ca.uhn.hl7v2.util.Terser;
 public class InitiatorImplTest {
     
     // you get that because you "installed" a log profile in configuration.
-    public Log logger = LogFactory.getLog(MinLLPWriterTest.class);
+    public Log logger = LogFactory.getLog(InitiatorImplTest.class);
     
     @Inject
     BundleContext bundleContext;
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi")
-	// , vmOption(
-	// "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+	return options(frameworks(equinox(), felix(), knopflerfish())
+		, logProfile()
+		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
+		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
+		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+
+
 	);
     }
     
@@ -165,7 +170,7 @@ public class InitiatorImplTest {
      * can control messages returned via receive().
      * 
      * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
-     * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by
+     * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by
      *          $Author: niranjansharma $
      */
     private class MockProcessor implements Processor {

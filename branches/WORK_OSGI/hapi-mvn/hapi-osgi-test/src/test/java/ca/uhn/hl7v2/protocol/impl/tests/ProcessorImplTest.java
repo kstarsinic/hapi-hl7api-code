@@ -39,7 +39,7 @@ import ca.uhn.hl7v2.protocol.tests.MockTransport;
 
 /**
  * @author <a href="mailto:bryan.tripp@uhn.on.ca">Bryan Tripp</a>
- * @version $Revision: 1.1.2.1 $ updated on $Date: 2009-08-20 02:42:22 $ by $Author: niranjansharma $
+ * @version $Revision: 1.1.2.2 $ updated on $Date: 2009-08-27 01:41:56 $ by $Author: niranjansharma $
  * @author Niranjan Sharma niranjan.sharma@med.ge.com This testcase has been extended for OSGI environment using Junit4 and PAX-Exam.
  */
 @RunWith(JUnit4TestRunner.class)
@@ -53,9 +53,15 @@ public class ProcessorImplTest {
     
     @Configuration
     public static Option[] configure() {
-	return options(frameworks(equinox(), felix(), knopflerfish()), logProfile(), systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0"), wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3")), mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-base").version("1.0-beta1-osgi")
-	// , vmOption(
-	// "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+	return options(frameworks(equinox(), felix(), knopflerfish())
+		, logProfile()
+		, systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO")
+		, mavenBundle().groupId("org.ops4j.pax.url").artifactId("pax-url-mvn").version("0.4.0")
+		, wrappedBundle(mavenBundle().groupId("org.ops4j.base").artifactId("ops4j-base-util").version("0.5.3"))
+		, mavenBundle().groupId("ca.uhn.hapi").artifactId("hapi-osgi-base").version("1.0-beta1")
+//		, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006" )
+
+
 	);
     }
     
