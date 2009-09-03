@@ -100,7 +100,7 @@
 			<groupId>ca.uhn.hapi</groupId>
 			<artifactId>hapi-structures-v26</artifactId>
 			<version>1.0-beta1</version>
-			<scope>provided</scope>
+				<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -164,7 +164,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+				</plugins>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
