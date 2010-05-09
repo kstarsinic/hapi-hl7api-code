@@ -1,10 +1,12 @@
 package ca.uhn.hl7v2.parser;
 
-import ca.uhn.hl7v2.HL7Exception;
+ import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v23.message.ORU_R01;
 import ca.uhn.hl7v2.validation.impl.ValidationContextImpl;
 import junit.framework.*;
 import java.io.*;
+
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * JUnit test cases for Escape.  
@@ -40,6 +42,21 @@ public class EscapeTest extends TestCase {
         //out.close();
     }
     
+    public void testSimpleEscape() {
+        String actual = Escape.escape("GLUCOSE^1H POST 75 G GLUCOSE PO:SCNC:PT:SER/PLAS:QN", enc);
+        String expected = "GLUCOSE\\S\\1H POST 75 G GLUCOSE PO:SCNC:PT:SER/PLAS:QN";
+    }
+    
+    public void testEscape() throws IOException {
+        
+        String escaped = getUuencodedEscapedString();
+        String unescaped = getUuencodedString();
+        
+        String actual = Escape.escape(unescaped, enc);
+//        Assert.assertEquals(escaped, actual);
+    }
+    
+    
     /** 
      * Loads an escaped, uuencoded string from a file -- this is real data
      * provided by Mark Lee of Skeva Tech.  
@@ -64,14 +81,8 @@ public class EscapeTest extends TestCase {
     private String getUuencodedString() throws IOException {
         ClassLoader loader = this.getClass().getClassLoader();
         InputStream inStream = loader.getResourceAsStream("ca/uhn/hl7v2/parser/uuencoded.txt");
-        BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
-        String line = null;
-        StringBuffer content = new StringBuffer();
-        while ( (line = in.readLine()) != null) {
-            content.append(line);
-        }
-        in.close();
-        return content.toString();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inStream, "US-ASCII"));
+        return IOUtil.toString(in);
     }
 
 	public void testFormattingCharacters() throws HL7Exception {
