@@ -46,7 +46,7 @@ import ca.uhn.hl7v2.model.v24.segment.PID;
 import ca.uhn.hl7v2.model.v25.message.ADT_A03;
 import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 import ca.uhn.hl7v2.parser.Parser;
-import ca.uhn.hl7v2.parser.ng.NewPipeParser;
+import ca.uhn.hl7v2.parser.PipeParser;
 import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.EncodingRule;
 import ca.uhn.hl7v2.validation.MessageRule;
@@ -67,7 +67,7 @@ import ca.uhn.hl7v2.validation.impl.ValidationContextImpl;
 public class NewPipeParserTest {
     
     // you get that because you "installed" a log profile in configuration.
-    public Log logger = LogFactory.getLog(NewPipeParserTest.class);
+    public Log logger = LogFactory.getLog(PipeParserTest.class);
     
     @Inject
     BundleContext bundleContext;
@@ -86,11 +86,11 @@ public class NewPipeParserTest {
 	);
     } 
     
-    NewPipeParser parser;
+    PipeParser parser;
     
     @Before
     public void BeforeTheTest() {
-	this.parser = new NewPipeParser();
+	this.parser = new PipeParser();
     }
     
     @After
@@ -333,7 +333,7 @@ public class NewPipeParserTest {
     public void testEarlyNonStandard() throws EncodingNotSupportedException, HL7Exception {
 	String message = "MSH|^~\\&|IRIS|SANTER|AMB_R|SANTER|200803051508||ADT^A03|263206|P|2.5\r\n" + "EVN||200803051509||||200803031508\r\n" + "ZZZ|aaa\r\n" + "PID|||5520255^^^PK^PK~ZZZZZZ83M64Z148R^^^CF^CF~ZZZZZZ83M64Z148R^^^SSN^SSN^^20070103^99991231~^^^^TEAM||ZZZ^ZZZ||19830824|F||||||||||||||||||||||N\r\n" + "PV1||I|6402DH^^^^^^^^MED. 1 - ONCOLOGIA^^OSPEDALE MAGGIORE DI LODI&LODI|||^^^^^^^^^^OSPEDALE MAGGIORE DI LODI&LODI|13936^TEST^TEST||||||||||5068^TEST2^TEST2||2008003369||||||||||||||||||||||||||200803031508\r\n" + "PR1|1||1111^Mastoplastica|Protesi|20090224|02|";
 	
-	Parser p = new NewPipeParser();
+	Parser p = new PipeParser();
 	p.setValidationContext(new ValidationContextImpl());
 	Message parsed = p.parse(message);
 	// This caused a hang at one point in development

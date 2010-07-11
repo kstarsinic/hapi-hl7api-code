@@ -7,7 +7,7 @@
 	<groupId>org.interfacefactory</groupId>
 	<artifactId>hapi-osgi-tests</artifactId>
 	<name>hapi-osgi-tests</name>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 
 	<packaging>jar</packaging>
 
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>ca.uhn.hapi</groupId>
 			<artifactId>hapi-osgi-base</artifactId>
-			<version>1.0-beta1</version>
+			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Pax Exam -->
