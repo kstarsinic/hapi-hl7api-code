@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 ./changes.xsd">
+	<properties>
+		<title>HAPI</title>
+	</properties>
+	<body>
+        <release version="1.2" date="2011-06-26"
+            description="This release brings some bug fixes and a
+  few enhancements. The primary focus of this release is in fixing issues relating to
+  parsing and encoding. In particular, a number of issues specific to parsing of
+  OBX-5 (Varies) values have been corrected.">
+            <action type="fix" dev="James Agnew">
+            	Fix one regression in HAPI 1.2-beta1, where a group containing at least one
+            	mandatory segment would sometimes be encoded as an empty segment 
+            	even if no content was added to it.
+            </action>
+            <action type="add" dev="James Agnew">
+            	Add two new system properties which allow OBX segments messages to be parsed
+            	even if they are either missing, or have an invalid value in OBX-2 (which defines
+            	the datatype used in OBX-5).
+				<![CDATA[
+	            	<a href="./xref/ca/uhn/hl7v2/examples/ParseInvalidObx2Values.html">More information</a>
+				]]>
+            </action>
+            <action type="add" dev="James Agnew">
+            	Add new utility classes for iterating over 
+            	a file containing multiple
+            	ER7 encoded HL7 messages. 
+				<![CDATA[
+	            	<a href="./xref/ca/uhn/hl7v2/examples/ReadMessagesFromFile.html">See example</a>
+				]]>
+            </action>
+            <action type="fix" dev="James Agnew">
+            	Fix an issue where calling 
+				<![CDATA[
+    	        	<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/AbstractPrimitive.html#parse(java.lang.String)">AbstractPrimitive#parse(String)</a>
+				]]>
+            	(for example on an ST datatype) 
+            	would not clear pre-existing 
+				<![CDATA[
+        	    	<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/Type.html#getExtraComponents()">extra components</a>
+				]]>
+            	if any were defined.
+            </action>
+            <action type="fix" dev="James Agnew">
+            	When encoding a group using the PipeParser where the first segment is required, but no data has been populated in that segment, 
+            	the empty segment is now still encoded if needed as a blank segment in order to give parsers a hint about which 
+            	group further segments are in. This helps to ensure that messages can be "round tripped", meaning that
+            	a message which is parsed, encoded, and then re-parsed should contain exactly the same structure from
+            	beginning to end. 
+            	For example, in an ORU^R01 message with a populated OBX segment, but no data
+            	in the mandatory OBR segment which begins the ORDER_OBSERVATION group (see 
+            	<![CDATA[<a href="http://hl7api.sourceforge.net/v26/apidocs/ca/uhn/hl7v2/model/v26/group/ORU_R01_ORDER_OBSERVATION.html">reference</a>]]>),
+            	the message would still contain an empty OBR segment when encoded:
+				<![CDATA[
+<pre>
+	MSH|^~\&|REG|W|||201103230042||ORU^R01|32153168|P|2.5
+	OBR|
+	OBX||ST|||Value Data
+</pre>
+				]]>
+				Previously, the following encoding would have occurred, which would have incorrectly been parsed as
+				having a custom OBX segment instead of having a normal ORDER_OBSERVATION group: 
+				<![CDATA[
+<pre>
+	MSH|^~\&|REG|W|||201103230042||ORU^R01|32153168|P|2.5
+	OBX||ST|||Value Data
+</pre>
+				]]>
+            </action>
+            <action type="add" dev="James Agnew">
+            	<![CDATA[<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/Group.html">Group</a>]]>
+            	interface now has a new method: isGroup(String). This method allows callers to determine
+            	if a child structure is a segment or a group. The only provided implementation, AbstractGroup,
+            	implements this method, so the API change should not have any effect on users.
+            </action>
+            <action type="fix" dev="James Agnew">
+            	Restore missing get[FIELD_NAME]Reps() methods from segments. These were accidentally removed
+            	with the conversion to a Velocity based structure generator, but they have now been
+            	restored.
+            </action>
+            <action type="fix" dev="James Agnew" issue="3303344">
+            	Avoid a NullPointerException if a null value is passed into the "setValue(Date)" or 
+            	"setValue(Calendar)" methods on a DT, TS, or TM datatype. Passing in a null now
+            	simply clears any existing value, bringing these methods in line with
+            	the behaviour of the "setValue(String)" method. 
+            	Thanks to Michael for reporting!
+            </action>
+            <action type="fix" dev="Stephane Giner" issue="3307882">
+            	Fix potential race condition when using ConnectionHub in a multithreaded
+            	environment.
+            </action>
+            <action type="fix" dev="Axel Biernat" issue="3308845">
+            	Avoid line wrapping when XML encoding messages using the XMLParser. This means
+            	that values with very long strings won't have unexpected breaks added when
+            	they are encoded and re-parsed. 
+            </action>
+            <action type="fix" dev="James Agnew">
+            	Correct issue where extra components in primitive types within OBX-5 appear twice when
+            	message is re-encoded. This is useful, for example, if you are receiving messages
+            	from a system which is not correctly escaping ampersands or carats within
+            	an OBX-5 value. Prior to chis change, a message containing the following
+            	segment:
+				<![CDATA[
+<pre>
+   OBX||ST|||F1C1^F2C1&F2C2
+</pre>
+				]]>
+            	Would be re-encoded as:
+				<![CDATA[
+<pre>
+   OBX||ST|||F1C1&F2C2^F2C1&F2C2
+</pre>
+				]]>
+				Thanks to Andbuty Choy for finding this.
+            </action>
+            <action type="fix" dev="James Agnew" issue="3306358">
+            	Prevent MessageIDGenerator (used to generate message control IDs for ACK messages, for example in SimpleServer)
+            	from throwing an exception if it is not able to parse the value found in id_file. Previously if something
+            	went wrong and this file was blank, a hard to debug exception was thrown. Now, control ID sequencing is simply
+            	reset to zero. Thanks to an anonymous bug submittor.
+            </action>
+            <action type="fix" dev="Rodolfo Chavez" issue="3264566">
+            	Fix an issue where inserting/removing a repetition of the very last field in a segment
+            	fails due to an incorrect range check in AbstractSegment. Thanks Rodolfo for submitting! 
+            </action>
+            <action type="fix" dev="James Agnew" issue="3212931">
+            	Where multiple structures are marked as associated with the same trigger event 
+            	(example: ORN_O02 and ORR_O02 are both indicated as matching trigger ORR^O02) the
+            	parser will favour the structure whose name matches the event type and trigger (ORR_O02 in the
+            	previous example) when parsing a message with no structure explicitly defined in MSH-9-3.
+            </action>
+            <action type="fix" dev="Ryan W. Gross">
+            	Fix an issue where subcomponents within a Varies (OBX-5) value are incorrectly handled. For example,
+            	if OBX-2 specifies a composite type, and the first component is also a composite, the first subcomponent
+            	(represented by the text F1C2 below) would be lost.
+				<![CDATA[
+<pre>
+	OBX||AD|||F1C1&F1C2^F2C1
+</pre>
+				]]>
+            </action>
+            <action type="fix" dev="James Agnew">
+            	Correct a PipeParser parsing issue: When a message is being parsed which contains 
+            	multiple unexpected segments, any unexpected segments after the first one may appear
+            	out of order if the message is re-encoded.
+            </action>
+		</release>
+        <release version="1.1" date="2011-03-28"
+            description="This release contains a number of bug fixes and several new features.">
+            <action type="add">HAPI libraries are now available in the Maven Central Repo. Thanks to Francis De Brabandere for figuring out how to make this happen!</action>
+            <action type="fix" dev="Christian Ohr">(Regression in 1.0-beta1) Some structures contained incorrect version information which led to inability to parse Z segments</action>
+            <action type="add" dev="James Agnew">Message types now have a convenience method initQuickstart which sets default values to MSH segment (field separator, message type, etc)</action>
+            <action type="add" dev="James Agnew">HAPI now has a Maven plugin which generates Message/Group/Segment struxctures based on an HL7 conformance profile. See the <![CDATA[<a href="http://hl7api.sourceforge.net/conformance.html">conformance</a>]]> page for more information.</action>
+            <action type="add" due-to="Gabriel Landais" issue="3164756">Allow users of HAPI SimpleServer to create an Application that handles errors. The provided patch adds an interface, which should be implemented by exception aware Applications. The application can then re-dispatch the provided ACK, or a create a completely new message.</action>
+            <action type="fix" due-to="Pepe Juarez" issue="3115671">Correct XML encoding of OMD_O03. (OMD_O03.DIET was incorrectly being encoded simply as "DIE")</action>
+            <action type="fix" due-to="Karl Weller" issue="3027567">Correct the spelling of the name TIMING in a number of group structures (e.g. OML_O21_TIMING which was previously OML_O21_TIIMING)</action>
+            <action type="update" dev="James Agnew">Update structure classes source generator to use an Apache Velocity based template instead of simple hard-coded string concatenation. This will make it much easier to add new features to the structures in the future.</action>
+            <action type="update" dev="James Agnew">Message now has a method <![CDATA[<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/Message.html#printStructure%28%29">Message#printStructure()</a>]]>, which returns a useful String for debugging containing a description of the entire structure of the message</action>
+            <action type="fix" dev="James Agnew">GenericParser ignores custom ModelClassFactory implementations passed into its constructor. Thanks to John R for reporting.</action>
+            <action type="fix" due-to="Yildiray Kabak">XML parser now parses subsequent datatype components correctly when a component is missing. E.g. if ED.1 is missing but ED.2 is present: Previously, ED.2 would be parsed as ED.1.</action>
+            <action type="fix" due-to="Torsten from Agfa Healthcare" issue="3031998">Parsing OBX-5 failed when value (as indicated by OBX-2) was a type which requires a table number (IS or ID). HAPI now defaults to table 0.</action>
+            <action type="fix" due-to="Karl Weller" issue="3027567">Parsing OBX-5 failed when value (as indicated by OBX-2) was a type which requires a table number (IS or ID). HAPI now defaults to table 0.</action>
+            <action type="fix" due-to="Kalle Eskola">Add check to ConnectionHub to avoid returning a connection which was explicitly closed. Also update "send and receive" example in documentation to show correct way of discarding a connection using ConnectionHub.</action>
+            <action type="add" dev="James Agnew">HAPI now logs the current version as it is being initialized, for troubleshooting purposes.</action>
+            <action type="add" dev="James Agnew">Add getters and setters to DT, TM, and TS data types to get and set values using standard Java Date and Calendar objects. (Examples <![CDATA[<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/primitive/CommonDT.html#getValueAsCalendar%28%29">here</a> and <a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/primitive/CommonDT.html#setValue%28java.util.Calendar%29">here</a>]]>)</action>
+            <action type="add" dev="James Agnew">Add <![CDATA[<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/parser/PipeParser.html#getInstanceWithNoValidation()">factory method</a>]]> to PipeParser which returns an instance with validation disabled (useful for one-liner parse routines)</action>
+            <action type="add" dev="James Agnew">Add <![CDATA[<a href="http://hl7api.sourceforge.net/base/apidocs/ca/uhn/hl7v2/model/Varies.html#INVALID_OBX2_TYPE_PROP">system property</a>]]> to allow OBX-2 to contain invalid values and still parse</action>
+        </release>
+        <release version="1.0.1" date="2010-05-16"
+            description="This release corrects a single issue">
+            <action type="fix" due-to="Irving Reid" issue="3002194">Correct an issue where a NullPointerException occurs if a mandatory segment at the end of a message is not present</action>
+        </release>
+		<release version="1.0" date="2010-04-12"
+            description="This release adds a newly reworked PipeParser, and number of new features">
+            <action type="fix">Correct regression introduced in 1.0-beta1 where a second segment within a group with the same name (i.e. the two PID segments in an ADT^A17) fails to parse correctly.</action>
+            <action type="fix">Provide default implementation of new abstract method "createNewTypeWithoutReflection" on AbstractSegment class to prevent breaking existing user defined types. Thanks to Christian Ohr for reporting.</action>
+            <action type="update" dev="James Agnew">Clean up logging in ServerSocketStreamSource (used by HL7Server) so that it doesn't spew unneccesary logs while waiting for a connection</action>
+            <action type="update" dev="James Agnew">Remove all test suites (not tests, just the suites), as they cause maven to execute tests twice, and clean up test execution. Full test suie execution is down to ~90 seconds from 10 mins.</action>
+		</release>
+		<release version="1.0-beta1" date="2009-11-28"
+            description="This version has not yet been released.">
+            <action type="add" due-to="Christian Ohr, Niranjan Sharma"><![CDATA[Add two new ModelClassFactory implementations: <a href="base/apidocs/ca/uhn/hl7v2/parser/CanonicalModelClassFactory.html">CanonicalModelClassFactory</a> (always returns the same version), and <a href="base/apidocs/ca/uhn/hl7v2/parser/CustomModelClassFactory.html">CustomModelClassFactory</a> (provides easy way to use custom structure packages)]]></action>
+            <action type="fix" dev="James Agnew">Fix a bug where formatting escape sequences were stripped from messages (i.e. leave sequences such as /.br/ alone)</action>
+            <action type="add" due-to="Christian Ohr">Overhaul Escape class (handles HL7 escape sequences) to dramatically improve performance</action>
+            <action type="fix" due-to="Jan Klasser" issue="1809573">Fix NullPointerException in DefaultValidator when no table present for an ID datatype</action>
+            <action type="fix" dev="James Agnew">Allow parsing of unknown message types for 2.5.1 and 2.6 messages</action>
+            <action type="update" dev="James Agnew">Convert HAPI source version JDK 5.0. This allows the use (and begins a gradual conversion) to generics by HAPI's internal structures. Support for JDK1.4 will still remain through version specific JARs produced by RetroTranslator.</action>
+            <action type="add" dev="James Agnew">Add getNames() method to Segment, to allow programatic access to segment's field names (needed by hUnit)</action>
+            <action type="fix" due-to="Gerald Bortis, Christian Ohr" issue="1263250">Fix serialization of HAPI Message objects. Also added serialVersionUID to a number of core classes.</action>
+            <action type="fix" due-to="Chris Busch">Fix a memory leak in Escape.java when lots of different encoding chars are used</action>
+			<action type="fix" dev="James Agnew">Modify ProcessorImpl (HL7Server processing class) to use an ExecutorService instead of spawning a new thread for each message to generate ACKs.</action>
+			<action type="fix" due-to="Gerald Bortis, Polloloco" issue="2164291">Fix XML parsing of seg groups containing more than one instance of the same segment (e.g. A17)</action>
+		</release>
+		<release version="0.6" date="2009-07-01"
+			description="This release adds support for HL7 2.5.1 and 2.6, as well as fixing a number of issues and introducing a new build system.">			
+			<action type="add" due-to="Christian Ohr" issue="2793054">Add constructors to all parser types allowing a custom model factory</action>
+			<action type="fix" due-to="Gerald Bortis, Polloloco" issue="2164291">Fix XML parsing of seg groups containing more than one instance of the same segment (e.g. A17)</action>
+			<action type="add" due-to="Peter Gershkovich">Added isRunning() method to SimpleServer</action>
+			<action type="add" dev="James Agnew">Add NULLDT datatype, to be used in withdrawn fields. Note that default validation expects this datatype to be empty, but custom validation does not need to enforce this.</action>
+			<action type="add" dev="James Agnew">Add setEncoding method to XmlParser to allow text encoding to be specified when creating XML messages. In response to mailing list query from Fernando Ramírez Sánchez</action>
+			<action type="add" due-to="Chris Horneck" issue="1890219">Add single argument constructor to ID datatype, to allow it to be used in OBX-5</action>
+			<action type="add" dev="James Agnew">New HAPI maven repository now available at http://hl7api.sourceforge.net/m2/</action>
+			<action type="fix" due-to="Frédéric Dubru">Make PipeParser not crash on empty segments (meaning segments with just a segment name, no field separator or fields)</action>
+			<action type="fix" due-to="Greg Groves" issue="1662979">NullPointerException if OBX-2 is invalid and OBX-5 is set</action>
+			<action type="fix" dev="btripp" issue="1657929">Parsing fails when (pipe) is used as non-field separator</action>
+			<action type="add" dev="James Agnew">Allow Parser to accept a null ValidationContext, which will prevent any attempt at validating messages from being made.</action>
+			<action type="add" due-to="Andy Pardue">Allow Parsers now get their default validation context from ValidationContextFactory if none is supplied</action>
+			<action type="add" due-to="Andy Pardue">Allow A new system property (See Varies JavaDoc) may be specified to supply a default datatype to be assumed for OBX-5 if none is found in OBX-2. A missing OBX-2 is not a valid case, but this property would allow a user to work around problems receiving from a bad message source</action>
+		</release>
+		<release version="0.5.1" date="2007-02-18"
+			description="This release fixes only one issue. In the previous release (0.5), some classes were released with a dependency on Java 5. HAPI officially supports JDK version 1.4, so this release corrects the dependency.">
+			<action type="fix" dev="James Agnew">Remove JDK 5 dependency</action>
+		</release>
+		<release version="0.5" date="2006-12-14">
+			<action type="fix" issue="1557203">hapi 0.4.3 Class Parser : Multi-threading conflict can occur</action>
+			<action type="fix" issue="1547989">Unescaping in XMLParser.getCriticalResponseData()    </action>
+			<action type="fix" issue="1539866">PipeParser.getCriticalResponseData() does not use version</action>
+			<action type="fix" issue="1539352">NullPointerException on garbage messages </action>
+			<action type="fix" issue="1536231">Class ExtraComponents not Serializable</action>
+			<action type="fix" issue="1536200">"I" instead of "PID" freezes the parser</action>
+			<action type="fix" issue="1525034">validation contexts are not used during parsing</action>
+			<action type="fix" issue="1525029">Error generating error responses for XML messages</action>
+			<action type="fix" issue="1482059">SIU S12 Segment Issue  </action>
+			<action type="fix" issue="1405670">DFT-P03 - incorrect message structure</action>
+			<action type="fix" issue="1377382">NM integer magnitude limited to java int</action>
+			<action type="fix" issue="1368028">ORU_R01_OBSERVATION incorrectly defined</action>
+			<action type="fix" issue="1284281">OBX-5 type assignment only operates on first rep</action>
+			<action type="fix" issue="260957">Missing Code in Version 2.5</action>
+			<action type="fix" issue="1240698">ORL_O34 message incorrectly defined</action>
+		</release>
+	</body>
+</document>
