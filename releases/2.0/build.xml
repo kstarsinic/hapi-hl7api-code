@@ -1,0 +1,139 @@
+<project name="MyProject" basedir=".">
+	<target name="site">
+		<echo>Running Maven</echo>
+		<exec executable="mvn.bat">
+			<arg line="-P SITE,ACCESS clean"/>
+		</exec>
+		<exec executable="mvn.bat">
+			<arg line="-P SITE,ACCESS post-site"/>
+		</exec>
+	</target>
+    <target name="package">
+        <echo>Running Maven</echo>
+        <exec executable="./mvn">
+            <arg line="-P GEN,ACCESS clean"/>
+        </exec>
+        <exec executable="mvn.bat">
+            <arg line="-P GEN,ACCESS install assembly:assembly"/>
+        </exec>
+    </target>
+    <target name="all">
+        <echo>Running Maven</echo>
+        <!--<exec executable="mvn.bat">
+            <arg line="-P GEN,ACCESS clean"/>
+        </exec>-->
+        <exec executable="mvn.bat">
+            <arg line="-P GEN,ACCESS install"/>
+        </exec>
+        <exec executable="mvn.bat">
+            <arg line="-P DIST,ACCESS package assembly:assembly site"/>
+        </exec>
+    </target>
+    <target name="survey">
+	 <replace dir="target/site" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[<!-- ======== START OF CLASS DATA ======== -->]]></replacetoken>
+            <replacevalue><![CDATA[
+<h1 style="color:#800000;">HAPI Community Survey 2011</h1>
+<div>
+This year, HAPI will be ten years old! To celebrate, we are launching our first survey on the HAPI user community. The survey takes less than five minutes to fill out, as it is just 8 quick multiple choice questions. Please take a few minutes to show your support!
+</div>
+<a href="https://sourceforge.net/apps/limesurvey/hl7api/index.php?sid=69291&newtest=Y">Access the survey here</a>
+<div>
+The survey will run until the fall.
+</div>
+</div>
+<HR>
+                ]]></replacevalue>
+        </replace>
+	</target> 
+
+	<target name="urchin">
+        <echo>Adding Google analytics in target/site</echo>
+        <replace dir="target/site" summary="true">
+            <include name="**/*.html"></include>
+            <replacefilter token="#build#" value="${label}"/>
+            <replacefilter token="#version#" value="${version}"/>
+            <replacetoken><![CDATA[</body>]]></replacetoken>
+            <replacevalue><![CDATA[
+                <script type="text/javascript">
+                var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+                <script type="text/javascript">
+                try {
+                var pageTracker = _gat._getTracker("UA-1395874-1");
+                pageTracker._trackPageview();
+                } catch(err) {}</script>
+                </body>
+                ]]></replacevalue>
+        </replace>
+        <replace dir="target/site" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[</BODY>]]></replacetoken>
+            <replacevalue><![CDATA[
+                <script type="text/javascript">
+                var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+                <script type="text/javascript">
+                try {
+                var pageTracker = _gat._getTracker("UA-1395874-1");
+                pageTracker._trackPageview();
+                } catch(err) {}</script>
+                </BODY>
+                ]]></replacevalue>
+        </replace>
+        <replace dir="target/site" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[</HEAD>
+<FRAMESET]]></replacetoken>
+            <replacevalue><![CDATA[
+                <script type="text/javascript">
+                var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+                <script type="text/javascript">
+                try {
+                var pageTracker = _gat._getTracker("UA-1395874-1");
+                pageTracker._trackPageview();
+                } catch(err) {}</script>
+                </HEAD>
+                <FRAMESET]]></replacevalue>
+        </replace>
+        <replace dir="target/site" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[</head>
+    <frameset]]></replacetoken>
+            <replacevalue><![CDATA[
+                <script type="text/javascript">
+                var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+                <script type="text/javascript">
+                try {
+                var pageTracker = _gat._getTracker("UA-1395874-1");
+                pageTracker._trackPageview();
+                } catch(err) {}</script>
+                </head>
+    <frameset]]></replacevalue>
+        </replace>        
+		  <replace dir="target/site/hapi-testpanel" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[UA-1395874-1]]></replacetoken>
+            <replacevalue><![CDATA[UA-1395874-3]]></replacevalue>
+        </replace>
+		  <replace dir="target/site/hapi-testpanel" summary="true">
+            <include name="**/*.html"></include>
+            <replacetoken><![CDATA[SOCIALPLUGINSHERE]]></replacetoken>
+            <replacevalue><![CDATA[
+<!-- Place this tag in your head or just before your close body tag -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-annotation="inline"></div>
+				]]></replacevalue>
+        </replace>
+ 
+    </target>
+</project>
