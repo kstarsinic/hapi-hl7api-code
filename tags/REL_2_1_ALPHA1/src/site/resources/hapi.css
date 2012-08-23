@@ -1,0 +1,64 @@
+
+#navcolumn {
+	background-color: white !important;
+}
+
+#leftColumn {
+	border: none !important;
+	margin: 0px;
+}
+
+#navcolumn h5 {
+	color: #206020;
+	background-color: #C0FFC0;
+}
+
+#breadcrumbs {
+	background: white;
+	padding: 0px;
+	border-bottom-width: 1px;
+	border-bottom-color: #C0C0C0;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3, h4, h5 {
+	color: #105010;
+	font-weight: bold;
+}
+
+.section {
+	padding: 0px;
+}
+
+.section h2 {
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #80FF80;
+	background-color: #C0FFC0;
+}
+
+.section h3 {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #40B040;
+	width: 66%;
+	background-image:url('images/littlehapiface.png');
+	background-repeat:no-repeat;
+	padding-left: 25px;
+}
+
+h4 {
+	padding: 0px;
+	margin-bottom: -15px;
+}
+
+dfn {
+	color: #008000;
+	background-color: #E0FFE0;
+	border-bottom: 1px dotted #40A040; 
+}
+
+a, a.externalLink, a:active, a:hover, a:link, a:visited {
+	color: #408840;
+}
+
