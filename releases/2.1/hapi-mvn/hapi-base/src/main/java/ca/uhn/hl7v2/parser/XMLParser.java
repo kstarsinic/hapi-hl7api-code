@@ -64,6 +64,7 @@ import org.w3c.dom.NodeList;
  * </code> as appropriate. XMLParser uses the Xerces parser, which must be installed in your
  * classpath.
  * 
+ * @see ParserConfiguration for configuration options which may affect parser encoding and decoding behaviour
  * @author Bryan Tripp, Shawn Bellina
  */
 public abstract class XMLParser extends Parser {
